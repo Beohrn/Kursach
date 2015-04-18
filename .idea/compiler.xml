@@ -26,5 +26,8 @@
         <module name="Kursach" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Kursach" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
