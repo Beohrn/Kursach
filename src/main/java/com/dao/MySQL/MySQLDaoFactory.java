@@ -30,6 +30,6 @@ public class MySQLDaoFactory implements DaoFactory {
 
     @Override
     public RouteDao getRouteDao(Connection connection) {
-        return null;
+        return new MySqlRouteDao(connection);
     }
 }

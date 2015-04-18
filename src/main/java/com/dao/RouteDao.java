@@ -10,13 +10,13 @@ import java.util.List;
  */
 public interface RouteDao {
 
-    public Route create();
+    public Route create(Route route) throws SQLException;
 
-    public Route read(int key);
+    public Route read(int key) throws SQLException;
 
-    public void update(Route route);
+    public void update(Route route) throws SQLException;
 
-    public void delete(Route route);
+    public void delete(Route route) throws SQLException;
 
     public List<Route> getAll() throws SQLException;
 

@@ -32,4 +32,13 @@ public class Route {
     public void setState(int state) {
         this.state = state;
     }
+
+    @Override
+    public String toString() {
+        return "Route{" +
+                "idRoute=" + idRoute +
+                ", car='" + car + '\'' +
+                ", state=" + state +
+                '}';
+    }
 }
