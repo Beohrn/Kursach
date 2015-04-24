@@ -1,7 +1,7 @@
 package com.dao.MySQL;
 
+import com.dao.CarInfoDAO;
 import com.dao.DaoFactory;
-import com.dao.R_StateDao;
 import com.dao.RouteDao;
 
 import java.sql.Connection;
@@ -15,7 +15,7 @@ public class MySQLDaoFactory implements DaoFactory {
 
     private String login = "root";
     private String password = "1234";
-    private String url = "jdbc:mysql://localhost:3306/mydb";
+    private String url = "jdbc:mysql://localhost:3306/mydatabase";
     private String driver = "com.mysql.jdbc.Driver";
 
     @Override
@@ -24,12 +24,16 @@ public class MySQLDaoFactory implements DaoFactory {
     }
 
     @Override
-    public R_StateDao getR_StateDao(Connection connection) {
-        return new MySqlR_StateDao(connection);
+    public CarInfoDAO getCarInfoDao(Connection connection) {
+        return new MySqlCarInfoDAO(connection);
     }
 
     @Override
     public RouteDao getRouteDao(Connection connection) {
         return new MySqlRouteDao(connection);
+    }
+
+    public void close() throws SQLException {
+        getConnection().close();
     }
 }

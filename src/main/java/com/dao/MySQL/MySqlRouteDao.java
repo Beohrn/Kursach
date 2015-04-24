@@ -23,11 +23,11 @@ public class MySqlRouteDao implements RouteDao {
 
     @Override
     public Route create(Route route) throws SQLException {
-        String sql = "INSERT INTO Route (idRoute, Car, State) VALUES (?, ?, ?);";
+        String sql = "INSERT INTO Route (idRoute, Car) VALUES (?, ?);";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, route.getIdRoute());
             statement.setString(2, route.getCar());
-            statement.setInt(3, route.getState());
+
             statement.executeUpdate();
         }
 
@@ -36,7 +36,7 @@ public class MySqlRouteDao implements RouteDao {
 
     @Override
     public Route read(int key) throws SQLException {
-        String sql = "SELECT * FROM mydb.Route WHERE idRoute = ?";
+        String sql = "SELECT * FROM mydatabase.route WHERE idRoute = ?";
         Route route = new Route();
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -45,7 +45,6 @@ public class MySqlRouteDao implements RouteDao {
             resultSet.next();
             route.setIdRoute(resultSet.getInt("idRoute"));
             route.setCar(resultSet.getString("Car"));
-            route.setState(resultSet.getInt("State"));
             route.toString();
         }
         return route;
@@ -53,11 +52,10 @@ public class MySqlRouteDao implements RouteDao {
 
     @Override
     public void update(Route route) throws SQLException {
-        String sql = "UPDATE Route SET Car = ?, State = ? WHERE idRoute = ?;";
+        String sql = "UPDATE Route SET Car = ? WHERE idRoute = ?;";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, route.getCar());
-            statement.setInt(2, route.getState());
-            statement.setInt(3, route.getIdRoute());
+            statement.setInt(2, route.getIdRoute());
             statement.executeUpdate();
         }
     }
@@ -73,7 +71,7 @@ public class MySqlRouteDao implements RouteDao {
 
     @Override
     public List<Route> getAll() throws SQLException {
-        String sql = "SELECT * FROM mydb.Route;";
+        String sql = "SELECT * FROM mydatabase.route;";
         List<Route> list = new ArrayList<Route>();
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -82,7 +80,6 @@ public class MySqlRouteDao implements RouteDao {
                 Route route = new Route();
                 route.setIdRoute(resultSet.getInt("idRoute"));
                 route.setCar(resultSet.getString("Car"));
-                route.setState(resultSet.getInt("State"));
                 route.toString();
                 list.add(route);
             }

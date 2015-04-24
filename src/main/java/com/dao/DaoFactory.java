@@ -10,7 +10,9 @@ public interface DaoFactory {
 
     public Connection getConnection() throws SQLException;
 
-    public R_StateDao getR_StateDao(Connection connection);
+    public void close() throws SQLException;
+
+    public CarInfoDAO getCarInfoDao(Connection connection);
 
     public RouteDao getRouteDao(Connection connection);
 }

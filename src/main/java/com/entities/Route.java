@@ -7,7 +7,6 @@ public class Route {
 
     private int idRoute;
     private String car;
-    private int state;
 
     public int getIdRoute() {
         return idRoute;
@@ -25,20 +24,11 @@ public class Route {
         this.car = car;
     }
 
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
-
     @Override
     public String toString() {
         return "Route{" +
                 "idRoute=" + idRoute +
                 ", car='" + car + '\'' +
-                ", state=" + state +
                 '}';
     }
 }
