@@ -256,7 +256,5 @@ public class CarController {
         }
     }
 
-    @FXML
-    private void
 
 }
