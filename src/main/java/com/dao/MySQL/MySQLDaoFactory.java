@@ -1,39 +1,62 @@
 package com.dao.MySQL;
 
-import com.dao.CarInfoDAO;
+import com.application.model.AppointRepair;
+import com.application.model.Car;
+import com.application.model.CarDetalis;
 import com.dao.DaoFactory;
-import com.dao.RouteDao;
+import com.dao.GenericDao;
+import com.dao.PersistException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Created by Alexander on 18.04.2015.
+ * Created by Alexander on 06.05.2015.
  */
-public class MySQLDaoFactory implements DaoFactory {
+public class MySqlDaoFactory implements DaoFactory {
 
-    private String login = "root";
-    private String password = "1234";
-    private String url = "jdbc:mysql://localhost:3306/mydatabase";
-    private String driver = "com.mysql.jdbc.Driver";
+    private String user = "root";//Логин пользователя
+    private String password = "1234";//Пароль пользователя
+    private String url = "jdbc:mysql://localhost:3306/kursach";
+    private String driver = "com.mysql.jdbc.Driver";//Имя драйвера
+    private Map<Class, DaoCreator> creators;
 
     @Override
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, login, password);
+        return DriverManager.getConnection(url, user, password);
     }
 
-    @Override
-    public CarInfoDAO getCarInfoDao(Connection connection) {
-        return new MySqlCarInfoDAO(connection);
-    }
+    public MySqlDaoFactory() {
+        try {
+            Class.forName(driver);//Регистрируем драйвер
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
-    @Override
-    public RouteDao getRouteDao(Connection connection) {
-        return new MySqlRouteDao(connection);
-    }
+        creators = new HashMap<Class, DaoCreator>();
+        creators.put(Car.class, new DaoCreator<Connection>() {
+            @Override
+            public GenericDao create(Connection connection) {
+                return new MySqlCarDao(connection);
+            }
+        });
 
-    public void close() throws SQLException {
-        getConnection().close();
+        creators.put(CarDetalis.class, new DaoCreator<Connection>() {
+            @Override
+            public GenericDao create(Connection o) {
+                return new MySqlCarDetalisDao(o);
+            }
+        });
+
+        creators.put(AppointRepair.class, new DaoCreator<Connection>() {
+            @Override
+            public GenericDao create(Connection o) {
+                return new MySQLAppointRepairDao(o);
+            }
+        });
     }
 }
+

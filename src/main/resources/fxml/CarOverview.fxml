@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.application.controller.CarController">
+  <children>
+    <MenuBar layoutX="-2.0" layoutY="0.0" prefWidth="802.0">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Close" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Delete" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <TabPane prefHeight="476.0" prefWidth="800.0" rotateGraphic="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
+      <tabs>
+        <Tab text="Общий список автомобилей">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <SplitPane dividerPositions="0.5325814536340853" focusTraversable="true" prefHeight="375.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <items>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <children>
+                        <TableView fx:id="carTableView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                          </columnResizePolicy>
+                          <columns>
+                            <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="33.0" text="#" fx:id="idColumn" />
+                            <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="124.0" text="Model" fx:id="nameColumn" />
+                            <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="85.0" text="Number" fx:id="numberColumn" />
+                            <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="76.0" text="State" fx:id="stateColumn" />
+                            <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="103.0" text="Type" fx:id="typeColumn" />
+                          </columns>
+                        </TableView>
+                      </children>
+                    </AnchorPane>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="418.0000999999975" prefWidth="369.9999000000025">
+                      <children>
+                        <Label prefWidth="365.0" text="Car Detalis" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+                          <font>
+                            <Font name="Arial Bold Italic" size="16.0" />
+                          </font>
+                        </Label>
+                        <GridPane AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0">
+                          <children>
+                            <Label text="Model" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <Label text="Number" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <Label text="Type" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <Label text="State" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                            <Label text="Tonage" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                            <Label text="Phone driver" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                            <Label text="Graduation Year" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                            <Label fx:id="name" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <Label fx:id="number" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <Label fx:id="type" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <Label fx:id="state" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            <Label fx:id="tonnage" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                            <Label fx:id="phoneDriver" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                            <Label fx:id="graduationYear" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                          </children>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                        <HBox id="HBox" alignment="CENTER" layoutX="91.0" layoutY="458.0" spacing="5.0">
+                          <children>
+                            <Button mnemonicParsing="false" onAction="#handleAppointRepair" text="Назначить ремонт" />
+                            <Button mnemonicParsing="false" onAction="#handleNewCar" prefWidth="78.0" text="New" />
+                            <Button fx:id="delete" mnemonicParsing="false" text="Delete" />
+                          </children>
+                        </HBox>
+                      </children>
+                    </AnchorPane>
+                  </items>
+                </SplitPane>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Список автомобилей назначенных в ремонт">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <TableView fx:id="carMallFuncTable" layoutX="14.0" layoutY="14.0" prefHeight="467.0" prefWidth="485.0">
+                  <columns>
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="34.0" text="#" fx:id="idMFColumn"/>
+                    <TableColumn prefWidth="75.0" text="Model" fx:id="modelColumnMF" />
+                    <TableColumn prefWidth="75.0" text="Number" fx:id="numberColumnMF"/>
+                    <TableColumn prefWidth="75.0" text="State" fx:id="stateColumnMF"/>
+                    <TableColumn prefWidth="75.0" text="Type" fx:id="typeColumnMF"/>
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="151.0" text="Type MallFunction" fx:id="typeMullFuncColumn"/>
+                  </columns>
+                </TableView>
+                <Button layoutX="694.0" layoutY="79.0" mnemonicParsing="false" text="Подтвердить" />
+                <TextField layoutX="509.0" layoutY="39.0" prefWidth="277.0" />
+                <Label layoutX="509.0" layoutY="14.0" text="Определение типа попломки" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+  </children>
+</AnchorPane>
