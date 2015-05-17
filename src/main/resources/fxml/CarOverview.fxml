@@ -119,8 +119,8 @@
                     <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="151.0" text="Type MallFunction" fx:id="typeMullFuncColumn"/>
                   </columns>
                 </TableView>
-                <Button layoutX="694.0" layoutY="79.0" mnemonicParsing="false" text="Подтвердить" />
-                <TextField layoutX="509.0" layoutY="39.0" prefWidth="277.0" />
+                <Button layoutX="694.0" layoutY="79.0" mnemonicParsing="false" text="Подтвердить" onAction="#handleConfirm"/>
+                <TextField layoutX="509.0" layoutY="39.0" prefWidth="277.0" fx:id="mullfuncField"/>
                 <Label layoutX="509.0" layoutY="14.0" text="Определение типа попломки" />
               </children>
             </AnchorPane>

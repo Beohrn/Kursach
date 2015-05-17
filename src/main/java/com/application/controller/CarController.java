@@ -13,10 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -95,10 +92,10 @@ public class CarController {
     private TableColumn<AppointRepair, String> typeColumnMF;
 
     @FXML
-    private TableColumn<AppointRepair, String> phoneColumnMF;
+    private TableColumn<AppointRepair, String> typeMullFuncColumn;
 
     @FXML
-    private TableColumn<AppointRepair, String> typeMullFuncColumn;
+    private TextField mullfuncField;
 
     private ApplicationStart applicationStart;
 
@@ -250,11 +247,34 @@ public class CarController {
             numberColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("number"));
             stateColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("state"));
             typeColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("type"));
+            typeMullFuncColumn.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("typeMF"));
             carMallFuncTable.setItems(listApp);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    private ObservableList<AppointRepair> list = FXCollections.observableArrayList();
+    @FXML
+    private void handleConfirm() {
+        DaoFactory daoFactory = new MySqlDaoFactory();
 
+        try (Connection connection = daoFactory.getConnection()) {
+            MySQLAppointRepairDao appointRepairDao = new MySQLAppointRepairDao(connection);
+
+            AppointRepair appointRepair = carMallFuncTable.getSelectionModel().getSelectedItem();
+
+            //mullfuncField.setText(appointRepair.getTypeMF());
+            //appointRepair.setId(appointRepair.getId());
+            appointRepair.setTypeMF(mullfuncField.getText());
+            appointRepairDao.update(appointRepair);
+            listApp.set(appointRepair.getId() - 1, appointRepair);
+            carMallFuncTable.setItems(listApp);
+            typeMullFuncColumn.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("typeMF"));
+            mullfuncField.clear();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

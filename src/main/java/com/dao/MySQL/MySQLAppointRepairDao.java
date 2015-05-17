@@ -33,7 +33,7 @@ public class MySQLAppointRepairDao implements GenericDao<AppointRepair> {
 
     @Override
     public String getUpdateQuery() {
-        return null;
+        return "UPDATE kursach.appointrepair SET typeMullFunc = ? WHERE id = ?;";
     }
 
     @Override
@@ -78,7 +78,11 @@ public class MySQLAppointRepairDao implements GenericDao<AppointRepair> {
 
     @Override
     public void update(AppointRepair object) throws SQLException {
-
+        try (PreparedStatement statement = connection.prepareStatement(getUpdateQuery())) {
+            statement.setString(1, object.getTypeMF());
+            statement.setInt(2, object.getId());
+            statement.executeUpdate();
+        }
     }
 
     @Override
