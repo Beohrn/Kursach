@@ -1,36 +1,17 @@
 package com.application.model;
 
 /**
- * Created by Alexander on 11.05.2015.
+ * Created by Alexander on 23.05.2015.
  */
-public class AppointRepair {
+public class Regular {
 
     private Integer id;
     private String model;
     private String number;
     private String phone;
     private String type;
-    private String state;
-    private String typeMF;
     private String tonnage;
     private String gradYear;
-
-
-    public String getTonnage() {
-        return tonnage;
-    }
-
-    public void setTonnage(String tonnage) {
-        this.tonnage = tonnage;
-    }
-
-    public String getGradYear() {
-        return gradYear;
-    }
-
-    public void setGradYear(String gradYear) {
-        this.gradYear = gradYear;
-    }
 
     public Integer getId() {
         return id;
@@ -72,19 +53,19 @@ public class AppointRepair {
         this.type = type;
     }
 
-    public String getState() {
-        return state;
+    public String getTonnage() {
+        return tonnage;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setTonnage(String tonnage) {
+        this.tonnage = tonnage;
     }
 
-    public String getTypeMF() {
-        return typeMF;
+    public String getGradYear() {
+        return gradYear;
     }
 
-    public void setTypeMF(String typeMF) {
-        this.typeMF = typeMF;
+    public void setGradYear(String gradYear) {
+        this.gradYear = gradYear;
     }
 }

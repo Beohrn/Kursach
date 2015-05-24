@@ -3,25 +3,31 @@ package com.application.controller;
 import com.application.model.AppointRepair;
 import com.application.model.Car;
 import com.application.model.CarDetalis;
+import com.application.model.Regular;
 import com.application.view.ApplicationStart;
 import com.dao.DaoFactory;
-import com.dao.MySQL.MySQLAppointRepairDao;
-import com.dao.MySQL.MySqlCarDao;
-import com.dao.MySQL.MySqlCarDetalisDao;
-import com.dao.MySQL.MySqlDaoFactory;
+import com.dao.MySQL.*;
+import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.css.PseudoClass;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import org.controlsfx.dialog.Dialogs;
 
+import java.awt.*;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -70,10 +76,6 @@ public class CarController {
     private Label graduationYear;
 
     @FXML
-    private Button delete;
-
-
-    @FXML
     private TableView<AppointRepair> carMallFuncTable;
 
     @FXML
@@ -95,8 +97,46 @@ public class CarController {
     private TableColumn<AppointRepair, String> typeMullFuncColumn;
 
     @FXML
+    private TableColumn<AppointRepair, String> phoneMF;
+
+    @FXML
+    private TableColumn<AppointRepair, String> tonnageMF;
+
+    @FXML
+    private TableColumn<AppointRepair, String> gradMF;
+
+    @FXML
     private TextField mullfuncField;
 
+    @FXML
+    private ProgressBar progressBar;
+
+    @FXML
+    private TableView<Regular> regularTableView;
+
+    @FXML
+    private TableColumn<Regular, Integer> idRegular;
+
+    @FXML
+    private TableColumn<Regular, String> modelRegular;
+
+    @FXML
+    private TableColumn<Regular, String> numberRegular;
+
+    @FXML
+    private TableColumn<Regular, String> phoneRegular;
+
+    @FXML
+    private TableColumn<Regular, String> typeRegular;
+
+    @FXML
+    private TableColumn<Regular, String> tonnageRegular;
+
+    @FXML
+    private TableColumn<Regular, String> gradRegular;
+
+    private ObservableList<Regular> regularObservableList = FXCollections.observableArrayList();
+    private ObservableList<AppointRepair> listApp = FXCollections.observableArrayList();
     private ApplicationStart applicationStart;
 
     public CarController() {
@@ -112,49 +152,36 @@ public class CarController {
         typeColumn.setCellValueFactory(new PropertyValueFactory<CarDetalis, String>("carType"));
 
         addMF();
+        addRegulary();
         showCarDetalis(null);
 
         carTableView.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldValue, newValue) -> showCarDetalis(newValue)
         );
-
-        delete.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                DaoFactory daoFactory = new MySqlDaoFactory();
-                try (Connection connection = daoFactory.getConnection()) {
-                    MySqlCarDetalisDao carDetalisDao = new MySqlCarDetalisDao(connection);
-                    MySqlCarDao carDao = new MySqlCarDao(connection);
-                    Car car = new Car();
-
-                    CarDetalis carDetalis = carTableView.getSelectionModel().getSelectedItem();
-                    car.setId(carDetalis.getId());
-                    car.setCarName(carDetalis.getCarName());
-                    car.setCarNumber(carDetalis.getCarNumber());
-                    car.setCarState(carDetalis.getCarState());
-                    car.setCarType(carDetalis.getCarType());
-                    int index = carTableView.getSelectionModel().getSelectedIndex();
-                    if (index >= 0) {
-                        carDetalisDao.delete(carDetalis);
-                        carDao.delete(car);
-                        carTableView.getItems().remove(index);
-
-                    } else {
-                        Dialogs.create()
-                                .title("No selection")
-                                .masthead("No Car Selected")
-                                .message("Please select a person in the table!")
-                                .showWarning();
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
     }
 
+    private void forRegular(ObservableList<Regular> list) {
+        idRegular.setCellValueFactory(new PropertyValueFactory<Regular, Integer>("id"));
+        modelRegular.setCellValueFactory(new PropertyValueFactory<Regular, String>("model"));
+        numberRegular.setCellValueFactory(new PropertyValueFactory<Regular, String>("number"));
+        phoneRegular.setCellValueFactory(new PropertyValueFactory<Regular, String>("phone"));
+        typeRegular.setCellValueFactory(new PropertyValueFactory<Regular, String>("type"));
+        tonnageRegular.setCellValueFactory(new PropertyValueFactory<Regular, String>("tonnage"));
+        gradRegular.setCellValueFactory(new PropertyValueFactory<Regular, String>("gradYear"));
+        regularTableView.setItems(list);
+    }
 
+    private void forAppointrepair(ObservableList<AppointRepair> list) {
+        idMFColumn.setCellValueFactory(new PropertyValueFactory<AppointRepair, Integer>("id"));
+        modelColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("model"));
+        numberColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("number"));
+        stateColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("state"));
+        typeColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("type"));
+
+        //idMFColumn.getStyleClass().add(".foo");
+
+        carMallFuncTable.setItems(list);
+    }
 
     public void setApplicationStart(ApplicationStart applicationStart) {
         this.applicationStart = applicationStart;
@@ -191,40 +218,32 @@ public class CarController {
         }
     }
 
+    @FXML
+    private void handleDelete() {
+        ButtonsController controller = new ButtonsController();
+        CarDetalis carDetalis = carTableView.getSelectionModel().getSelectedItem();
+        Car car = new Car();
+        controller.buttonDelete(car, carDetalis);
+        int index = carTableView.getSelectionModel().getSelectedIndex();
+        if (index >= 0) {
+            carTableView.getItems().remove(index);
 
-    private ObservableList<AppointRepair> listApp = FXCollections.observableArrayList();
+        } else {
+            Dialogs.create()
+                    .title("No selection")
+                    .masthead("No Car Selected")
+                    .message("Please select a person in the table!")
+                    .showWarning();
+        }
+    }
+
     @FXML
     private void handleAppointRepair() {
         CarDetalis selectedCar = carTableView.getSelectionModel().getSelectedItem();
-        AppointRepair appointRepair = new AppointRepair();
-
-
+        ButtonsController controller = new ButtonsController();
         if (selectedCar != null) {
-            DaoFactory daoFactory = new MySqlDaoFactory();
-            try (Connection connection = daoFactory.getConnection()) {
-                MySQLAppointRepairDao appointRepairDao = new MySQLAppointRepairDao(connection);
-                appointRepair.setModel(selectedCar.getCarName());
-                appointRepair.setNumber(selectedCar.getCarNumber());
-                appointRepair.setState(selectedCar.getCarState());
-                appointRepair.setPhone(selectedCar.getCarPhoneNumber());
-                appointRepair.setType(selectedCar.getCarType());
-                appointRepairDao.create(appointRepair);
-
-                List<AppointRepair> list = appointRepairDao.getAll();
-                for (int i = list.size(); i > list.size() - 1; i--) {
-                    listApp.add(appointRepairDao.get(i));
-                }
-
-                idMFColumn.setCellValueFactory(new PropertyValueFactory<AppointRepair, Integer>("id"));
-                modelColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("model"));
-                numberColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("number"));
-                stateColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("state"));
-                typeColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("type"));
-                carMallFuncTable.setItems(listApp);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
+            controller.buttonAppointRepairClick(selectedCar, listApp);
+            forAppointrepair(listApp);
         } else {
             Dialogs.create()
                     .title("No Selection")
@@ -242,39 +261,93 @@ public class CarController {
             for (int i = 1; i <= list.size(); i++) {
                 listApp.add(appointRepairDao.get(i));
             }
-            idMFColumn.setCellValueFactory(new PropertyValueFactory<AppointRepair, Integer>("id"));
-            modelColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("model"));
-            numberColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("number"));
-            stateColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("state"));
-            typeColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("type"));
-            typeMullFuncColumn.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("typeMF"));
-            carMallFuncTable.setItems(listApp);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            typeMullFuncColumn.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("typeMF"));
+            forAppointrepair(listApp);
         }
     }
-    private ObservableList<AppointRepair> list = FXCollections.observableArrayList();
+
     @FXML
     private void handleConfirm() {
         DaoFactory daoFactory = new MySqlDaoFactory();
-
         try (Connection connection = daoFactory.getConnection()) {
             MySQLAppointRepairDao appointRepairDao = new MySQLAppointRepairDao(connection);
-
             AppointRepair appointRepair = carMallFuncTable.getSelectionModel().getSelectedItem();
-
-            //mullfuncField.setText(appointRepair.getTypeMF());
-            //appointRepair.setId(appointRepair.getId());
             appointRepair.setTypeMF(mullfuncField.getText());
             appointRepairDao.update(appointRepair);
             listApp.set(appointRepair.getId() - 1, appointRepair);
             carMallFuncTable.setItems(listApp);
             typeMullFuncColumn.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("typeMF"));
             mullfuncField.clear();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void handleToRepair() {
+        AppointRepair appointRepair = carMallFuncTable.getSelectionModel().getSelectedItem();
+        ButtonsController controller = new ButtonsController();
+        controller.buttonToRepair(appointRepair, listApp);
+        carMallFuncTable.setItems(listApp);
+        Task task = createWorker();
+        progressBar.progressProperty().unbind();
+        progressBar.progressProperty().bind(task.progressProperty());
+        new Thread(task).start();
+        stateColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("state"));
+        typeMullFuncColumn.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("typeMF"));
+    }
+
+
+    private Task createWorker() {
+        return new Task() {
+            @Override
+            protected Object call() throws Exception {
+                for (int i = 0; i < 10; i++) {
+                    Thread.sleep(20);
+                    updateProgress(i + 1, 10);
+                }
+                return true;
+            }
+        };
+    }
+
+    @FXML
+    private void handleRegulary() {
+        ButtonsController controller = new ButtonsController();
+        AppointRepair appointRepair = carMallFuncTable.getSelectionModel().getSelectedItem();
+        if (appointRepair != null) {
+            controller.buttonRegularClick(appointRepair, regularObservableList);
+            forRegular(regularObservableList);
+        }
+
+    }
+
+    private void addRegulary() {
+        DaoFactory daoFactory = new MySqlDaoFactory();
+        try (Connection connection = daoFactory.getConnection()) {
+            MySQLRegularDao regularDao = new MySQLRegularDao(connection);
+            List<Regular> list = regularDao.getAll();
+            for (int i = 1; i <= list.size(); i++) {
+                regularObservableList.add(regularDao.get(i));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            forRegular(regularObservableList);
+        }
+    }
+
+    @FXML
+    private void handleRegularyFromCommonTable() {
+        CarDetalis carDetalis = carTableView.getSelectionModel().getSelectedItem();
+        ButtonsController controller = new ButtonsController();
+        controller.buttonRegularyFromCommonTable(carDetalis, regularObservableList);
+        forRegular(regularObservableList);
+    }
+
+
 
 }

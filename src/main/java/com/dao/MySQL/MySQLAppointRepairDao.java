@@ -2,7 +2,6 @@ package com.dao.MySQL;
 
 import com.application.model.AppointRepair;
 import com.dao.GenericDao;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +27,7 @@ public class MySQLAppointRepairDao implements GenericDao<AppointRepair> {
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO kursach.appointrepair (model, number, typeMullFunc, phone, state, type) VALUES (?,?,?,?,?,?);";
+        return "INSERT INTO kursach.appointrepair (model, number, typeMullFunc, phone, state, tonnage, gradyear, type) VALUES (?,?,?,?,?,?,?,?);";
     }
 
     @Override
@@ -50,7 +49,10 @@ public class MySQLAppointRepairDao implements GenericDao<AppointRepair> {
             statement.setString(3, object.getTypeMF());
             statement.setString(4, object.getPhone());
             statement.setString(5, object.getState());
-            statement.setString(6, object.getType());
+            statement.setString(6, object.getTonnage());
+            statement.setString(7, object.getGradYear());
+            statement.setString(8, object.getType());
+
             statement.executeUpdate();
         }
         return object;
@@ -70,6 +72,8 @@ public class MySQLAppointRepairDao implements GenericDao<AppointRepair> {
             appointRepair.setTypeMF(resultSet.getString("typeMullFunc"));
             appointRepair.setPhone(resultSet.getString("phone"));
             appointRepair.setState(resultSet.getString("state"));
+            appointRepair.setTonnage(resultSet.getString("tonnage"));
+            appointRepair.setGradYear(resultSet.getString("gradyear"));
             appointRepair.setType(resultSet.getString("type"));
 
         }
@@ -81,6 +85,16 @@ public class MySQLAppointRepairDao implements GenericDao<AppointRepair> {
         try (PreparedStatement statement = connection.prepareStatement(getUpdateQuery())) {
             statement.setString(1, object.getTypeMF());
             statement.setInt(2, object.getId());
+            statement.executeUpdate();
+        }
+    }
+
+    public void set(AppointRepair object) throws SQLException {
+        String sql = "UPDATE kursach.appointrepair SET state = ?, typeMullFunc = ? WHERE id = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, object.getState());
+            statement.setString(2, object.getTypeMF());
+            statement.setInt(3, object.getId());
             statement.executeUpdate();
         }
     }
@@ -106,7 +120,10 @@ public class MySQLAppointRepairDao implements GenericDao<AppointRepair> {
                 appointRepair.setTypeMF(resultSet.getString("typeMullFunc"));
                 appointRepair.setPhone(resultSet.getString("phone"));
                 appointRepair.setState(resultSet.getString("state"));
+                appointRepair.setTonnage(resultSet.getString("tonnage"));
+                appointRepair.setGradYear(resultSet.getString("gradyear"));
                 appointRepair.setType(resultSet.getString("type"));
+
                 list.add(appointRepair);
             }
         }

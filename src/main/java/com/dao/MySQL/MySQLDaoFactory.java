@@ -3,9 +3,10 @@ package com.dao.MySQL;
 import com.application.model.AppointRepair;
 import com.application.model.Car;
 import com.application.model.CarDetalis;
+import com.application.model.Regular;
 import com.dao.DaoFactory;
 import com.dao.GenericDao;
-import com.dao.PersistException;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -55,6 +56,13 @@ public class MySqlDaoFactory implements DaoFactory {
             @Override
             public GenericDao create(Connection o) {
                 return new MySQLAppointRepairDao(o);
+            }
+        });
+
+        creators.put(Regular.class, new DaoCreator<Connection>() {
+            @Override
+            public GenericDao create(Connection o) {
+                return new MySQLRegularDao(o);
             }
         });
     }

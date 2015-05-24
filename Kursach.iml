@@ -14,5 +14,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="controlsfx-8.0.6_20" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.34" level="project" />
+    <orderEntry type="library" name="controlsfx-8.0.6_201" level="project" />
+    <orderEntry type="library" name="jfxtras-labs-samples-8.0-r4-SNAPSHOT-shadow" level="project" />
   </component>
 </module>

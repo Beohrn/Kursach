@@ -1,11 +1,7 @@
 package com.dao.MySQL;
 
-import com.application.model.Car;
 import com.application.model.CarDetalis;
-
 import com.dao.GenericDao;
-import com.dao.PersistException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -52,6 +52,7 @@ public class Main {
 ////            System.out.println(carDetalisDao.getAll());
 //
 //
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

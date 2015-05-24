@@ -4,17 +4,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="320.0" prefWidth="380.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.application.controller.CarAddController">
+<AnchorPane prefHeight="320.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.controller.CarAddController">
     <children>
         <GridPane prefHeight="200.0" prefWidth="360.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <children>
-                <Label text="Id Car" />
-                <TextField fx:id="idField" GridPane.columnIndex="1" />
                 <Label text="Model" GridPane.rowIndex="1" />
                 <Label text="Number" GridPane.rowIndex="2" />
                 <Label text="Type" GridPane.rowIndex="3" />
                 <Label text="State" GridPane.rowIndex="4" />
                 <Label text="Tonnage" GridPane.rowIndex="5" />
+                <TextField fx:id="idField" GridPane.columnIndex="1" />
                 <TextField fx:id="modelField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <TextField fx:id="numberField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <TextField fx:id="typeField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -24,6 +23,7 @@
                 <Label text="Graduation Year" GridPane.rowIndex="7" />
                 <TextField fx:id="phoneDriverField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                 <TextField fx:id="gradYearField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
             </children>
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0" minWidth="10.0" prefWidth="120.0" />
@@ -42,9 +42,10 @@
         </GridPane>
         <HBox spacing="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
             <children>
-                <Button mnemonicParsing="false"  prefWidth="90.0" text="OK" onAction="#handleOk" />
-                <Button mnemonicParsing="false"  prefWidth="90.0" text="Cancel" onAction="#handleCancel"/>
+                <Button mnemonicParsing="false" onAction="#handleOk" prefWidth="90.0" text="OK" />
+                <Button mnemonicParsing="false" onAction="#handleCancel" prefWidth="90.0" text="Cancel" />
             </children>
         </HBox>
+      <Label layoutX="10.0" layoutY="10.0" text="Id" />
     </children>
 </AnchorPane>

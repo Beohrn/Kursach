@@ -1,8 +1,5 @@
 package com.dao;
 
-import com.application.model.Car;
-import com.application.model.CarDetalis;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 
