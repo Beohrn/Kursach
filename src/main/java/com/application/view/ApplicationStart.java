@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -37,7 +38,7 @@ public class ApplicationStart extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("MainAPP");
-
+        this.primaryStage.getIcons().add(new Image("/images/1432610050_Settings-5.png"));
        // initRootLayout();
         showCarOverview();
     }
@@ -78,29 +79,6 @@ public class ApplicationStart extends Application {
         }
     }
 
-    public boolean showCarEditDialog(CarDetalis carDetalis, Car car) {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(ApplicationStart.class.getResource("/fxml/CarEditDialog.fxml"));
-            AnchorPane pane = (AnchorPane) loader.load();
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Edit Car");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
-            Scene scene = new Scene(pane);
-            dialogStage.setScene(scene);
-
-            CarEditController carEditController = loader.getController();
-            carEditController.setDialogStage(dialogStage);
-            carEditController.setCarDetalis(carDetalis, car);
-            dialogStage.showAndWait();
-            return carEditController.isOkClicked();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     public boolean showCarAddDialog(CarDetalis carDetalis, Car car) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -112,7 +90,7 @@ public class ApplicationStart extends Application {
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(pane);
             dialogStage.setScene(scene);
-
+            dialogStage.getIcons().add(new Image("/images/add.png"));
             CarAddController carAddController = loader.getController();
             carAddController.setDialogStage(dialogStage);
             carAddController.setCarDetalis(carDetalis, car);

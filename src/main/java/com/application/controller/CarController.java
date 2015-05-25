@@ -8,12 +8,17 @@ import com.application.view.ApplicationStart;
 import com.dao.DaoFactory;
 import com.dao.MySQL.*;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.css.PseudoClass;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,14 +26,19 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.*;
+import javafx.util.Callback;
 import org.controlsfx.dialog.Dialogs;
 
+import javax.swing.plaf.synth.ColorType;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -151,6 +161,9 @@ public class CarController {
         stateColumn.setCellValueFactory(new PropertyValueFactory<CarDetalis, String>("carState"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<CarDetalis, String>("carType"));
 
+
+
+
         addMF();
         addRegulary();
         showCarDetalis(null);
@@ -159,7 +172,7 @@ public class CarController {
                 (observableValue, oldValue, newValue) -> showCarDetalis(newValue)
         );
     }
-
+    private ObservableList<String> stateList = FXCollections.observableArrayList("Свободен", "На маршруте");
     private void forRegular(ObservableList<Regular> list) {
         idRegular.setCellValueFactory(new PropertyValueFactory<Regular, Integer>("id"));
         modelRegular.setCellValueFactory(new PropertyValueFactory<Regular, String>("model"));
@@ -168,6 +181,7 @@ public class CarController {
         typeRegular.setCellValueFactory(new PropertyValueFactory<Regular, String>("type"));
         tonnageRegular.setCellValueFactory(new PropertyValueFactory<Regular, String>("tonnage"));
         gradRegular.setCellValueFactory(new PropertyValueFactory<Regular, String>("gradYear"));
+
         regularTableView.setItems(list);
     }
 
@@ -177,15 +191,13 @@ public class CarController {
         numberColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("number"));
         stateColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("state"));
         typeColumnMF.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("type"));
-
-        //idMFColumn.getStyleClass().add(".foo");
-
         carMallFuncTable.setItems(list);
     }
 
     public void setApplicationStart(ApplicationStart applicationStart) {
         this.applicationStart = applicationStart;
         carTableView.setItems(applicationStart.getObservableListCar());
+
     }
 
     private void showCarDetalis(CarDetalis carDetalis) {
@@ -197,6 +209,7 @@ public class CarController {
             tonnage.setText(carDetalis.getCarTonnage());
             phoneDriver.setText(carDetalis.getCarPhoneNumber());
             graduationYear.setText(carDetalis.getCarGradYear());
+
         } else {
             name.setText("");
             number.setText("");
@@ -222,8 +235,8 @@ public class CarController {
     private void handleDelete() {
         ButtonsController controller = new ButtonsController();
         CarDetalis carDetalis = carTableView.getSelectionModel().getSelectedItem();
-        Car car = new Car();
-        controller.buttonDelete(car, carDetalis);
+
+        controller.buttonDelete(carDetalis);
         int index = carTableView.getSelectionModel().getSelectedIndex();
         if (index >= 0) {
             carTableView.getItems().remove(index);
@@ -237,13 +250,19 @@ public class CarController {
         }
     }
 
+
     @FXML
     private void handleAppointRepair() {
         CarDetalis selectedCar = carTableView.getSelectionModel().getSelectedItem();
+
         ButtonsController controller = new ButtonsController();
         if (selectedCar != null) {
             controller.buttonAppointRepairClick(selectedCar, listApp);
             forAppointrepair(listApp);
+            int index = carTableView.getSelectionModel().getSelectedIndex();
+            if (index >= 0)
+                carTableView.getItems().remove(index);
+                controller.buttonDelete(selectedCar);
         } else {
             Dialogs.create()
                     .title("No Selection")
@@ -265,6 +284,7 @@ public class CarController {
             e.printStackTrace();
         } finally {
             typeMullFuncColumn.setCellValueFactory(new PropertyValueFactory<AppointRepair, String>("typeMF"));
+
             forAppointrepair(listApp);
         }
     }
@@ -346,6 +366,51 @@ public class CarController {
         ButtonsController controller = new ButtonsController();
         controller.buttonRegularyFromCommonTable(carDetalis, regularObservableList);
         forRegular(regularObservableList);
+        int index = carTableView.getSelectionModel().getSelectedIndex();
+        if (index >= 0) {
+            carTableView.getItems().remove(index);
+
+        } else {
+            Dialogs.create()
+                    .title("No selection")
+                    .masthead("No Car Selected")
+                    .message("Please select a person in the table!")
+                    .showWarning();
+        }
+    }
+
+    @FXML
+    private void handleWritten() {
+        AppointRepair appointRepair = carMallFuncTable.getSelectionModel().getSelectedItem();
+        ButtonsController controller = new ButtonsController();
+        int index = carMallFuncTable.getSelectionModel().getSelectedIndex();
+        if (index >= 0) {
+            controller.buttonWritten(appointRepair);
+            carMallFuncTable.getItems().remove(index);
+        }
+
+    }
+
+    @FXML
+    private void handleSend() {
+        Dialogs.create()
+                .title("Отправка")
+                .message("Список исправных авто оправлен технологу")
+                .showInformation();
+    }
+
+    @FXML
+    private void handleAbout() {
+        Dialogs.create()
+                .title("О программе")
+                .masthead("бла-бла")
+                .message("Автор: Алесандр")
+                .showInformation();
+    }
+
+    @FXML
+    private void handleClose() {
+        System.exit(0);
     }
 
 

@@ -12,6 +12,7 @@ public class Regular {
     private String type;
     private String tonnage;
     private String gradYear;
+    private String state;
 
     public Integer getId() {
         return id;
@@ -67,5 +68,13 @@ public class Regular {
 
     public void setGradYear(String gradYear) {
         this.gradYear = gradYear;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

@@ -62,7 +62,8 @@ public class ButtonsController {
         return appointRepair;
     }
 
-    public void buttonDelete(Car car, CarDetalis carDetalis) {
+    public void buttonDelete(CarDetalis carDetalis) {
+        Car car = new Car();
         DaoFactory daoFactory = new MySqlDaoFactory();
         try (Connection connection = daoFactory.getConnection()) {
             MySqlCarDetalisDao carDetalisDao = new MySqlCarDetalisDao(connection);
@@ -91,7 +92,7 @@ public class ButtonsController {
             e.printStackTrace();
         }
     }
-
+    
     public void buttonRegularyFromCommonTable(CarDetalis carDetalis, ObservableList<Regular> list) {
         DaoFactory daoFactory = new MySqlDaoFactory();
         Car car = new Car();
@@ -113,5 +114,16 @@ public class ButtonsController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void buttonWritten(AppointRepair appointRepair) {
+        DaoFactory daoFactory = new MySqlDaoFactory();
+        try (Connection connection = daoFactory.getConnection()) {
+            MySQLAppointRepairDao appointRepairDao = new MySQLAppointRepairDao(connection);
+            appointRepairDao.delete(appointRepair);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
