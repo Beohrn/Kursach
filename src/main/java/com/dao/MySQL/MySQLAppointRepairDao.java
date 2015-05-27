@@ -104,6 +104,16 @@ public class MySQLAppointRepairDao implements GenericDao<AppointRepair> {
         try (PreparedStatement statement = connection.prepareStatement(getDeleteQuery())) {
             statement.setInt(1, object.getId());
             statement.executeUpdate();
+            resetAutoincrement();
+        }
+    }
+
+    public void resetAutoincrement() {
+        String sql = "ALTER TABLE appointrepair AUTO_INCREMENT = 1";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

@@ -71,6 +71,7 @@ public class MySQLRegularDao implements GenericDao<Regular> {
             regular.setType(resultSet.getString("type"));
             regular.setTonnage(resultSet.getString("tonnage"));
             regular.setGradYear(resultSet.getString("gradyear"));
+            regular.setState(resultSet.getString("state"));
         }
         return regular;
     }
@@ -87,6 +88,17 @@ public class MySQLRegularDao implements GenericDao<Regular> {
             statement.setInt(7, object.getId());
             statement.executeUpdate();
         }
+    }
+
+    public void setState(Regular regular) throws SQLException {
+        String sql = "UPDATE kursach.regulary SET state = ? WHERE id = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, regular.getState());
+            statement.setInt(2, regular.getId());
+            statement.executeUpdate();
+
+        }
+
     }
 
     @Override
@@ -111,6 +123,7 @@ public class MySQLRegularDao implements GenericDao<Regular> {
                 regular.setType(resultSet.getString("type"));
                 regular.setTonnage(resultSet.getString("tonnage"));
                 regular.setGradYear(resultSet.getString("gradyear"));
+                regular.setState(resultSet.getString("state"));
                 list.add(regular);
             }
         }
